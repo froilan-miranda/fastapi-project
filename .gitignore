@@ -6,3 +6,6 @@ __pycache__
 .venv
 .vscode/
 *.png
+.pytest_cache
+logs/
+*.log
