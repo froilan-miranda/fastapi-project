@@ -1,7 +1,7 @@
 import logging
 from enum import Enum
 from typing import Annotated
-from fastapi import Depends, APIRouter, HTTPException, Request, BackgroundTasks, Request
+from fastapi import Depends, APIRouter, HTTPException, Request, BackgroundTasks
 import sqlalchemy
 from src.database import database, post_table, comment_table, like_table
 from src.models.post import (
@@ -15,8 +15,7 @@ from src.models.post import (
     UserPostWithLikes,
 )
 from src.models.user import User
-from src.security import get_current_user, oauth2_scheme
-from src.services.email_service import send_email
+from src.security import get_current_user
 from src.tasks import generate_and_add_to_post
 
 

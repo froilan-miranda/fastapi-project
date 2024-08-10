@@ -8,6 +8,21 @@ from src.logging_conf import configure_logging
 from src.routers.post import router as post_router
 from src.routers.user import router as user_router
 from src.routers.upload import router as upload_router
+from src.config import config
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn=config.SENTRY_DSN,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
+
+app = FastAPI()
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +43,10 @@ app.include_router(post_router)
 app.include_router(user_router)
 app.include_router(upload_router)
 
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
+    return division_by_zero
 
 @app.exception_handler(HTTPException)
 async def http_exception_handle_logging(request, exc):

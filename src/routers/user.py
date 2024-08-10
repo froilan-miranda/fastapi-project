@@ -1,6 +1,5 @@
 import logging
-from typing import Annotated
-from fastapi import Depends, APIRouter, BackgroundTasks, HTTPException, status, Request
+from fastapi import APIRouter, BackgroundTasks, HTTPException, status, Request
 from src.models.user import UserIn
 from src.security import (
     get_password_hash,
