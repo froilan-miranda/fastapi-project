@@ -35,6 +35,9 @@ jobs:
       run: |
         touch .env
         echo ENV_STATE=test >> .env
+        echo DEV_AWS_REGION_NAME=us-east-1 >> .env
+        echo DEV_AWS_ACCESS_KEY_ID=XXX >> .env
+        echo DEV_AWS_SECRET_ACCESS_KEY=XXX >> .env
         cat .env
     - name: Test with pytest
       run: |
