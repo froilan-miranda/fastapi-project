@@ -12,8 +12,6 @@ ses_client = boto3.client(
     aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY,
 )
 
-logger.info(config.AWS_REGION_NAME)
-
 #async def send_email(subject: str, body: str, recipients: list[str]) -> None:
 async def send_email(to: str, subject: str, body: str) -> None:
     logger.info("Sending email")
