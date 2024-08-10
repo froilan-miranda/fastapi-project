@@ -7,5 +7,5 @@ __pycache__
 .vscode/
 *.png
 .pytest_cache
-logs/*
+logs/*.log
 *.log
