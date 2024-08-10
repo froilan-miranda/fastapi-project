@@ -12,9 +12,11 @@ class UserPost(UserPostIn):
     user_id: int
     image_url: Optional[str] = None
 
+
 class UserPostWithLikes(UserPost):
     model_config = ConfigDict(from_attributes=True)
     likes: int
+
 
 class CommentIn(BaseModel):
     body: str
@@ -31,8 +33,10 @@ class UserPostWithComments(BaseModel):
     post: UserPostWithLikes
     comments: list[Comment]
 
+
 class PostLikeIn(BaseModel):
     post_id: int
+
 
 class PostLike(PostLikeIn):
     id: int

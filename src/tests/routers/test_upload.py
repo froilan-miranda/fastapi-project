@@ -75,4 +75,3 @@ async def test_temp_file_removed_after_upload(
 
     # Check if the temp_file is removed after the file is uploaded
     assert not os.path.exists(created_temp_file.name)
-

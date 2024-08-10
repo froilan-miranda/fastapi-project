@@ -31,7 +31,6 @@ class TestConfig(GlobalConfig):
     DB_FORCE_ROLL_BACK: bool = True
 
 
-
 class ProdConfig(GlobalConfig):
     model_config = SettingsConfigDict(env_prefix="PROD_")
 

@@ -48,16 +48,23 @@ async def registered_user(async_client: AsyncClient) -> dict:
     user_details["id"] = user["id"]
     return user_details
 
+
 @pytest.fixture()
 async def confirmed_user(registered_user: dict) -> dict:
-    query = (user_table.update().where(user_table.c.email == registered_user["email"]).values(confirmed=True))
+    query = (
+        user_table.update()
+        .where(user_table.c.email == registered_user["email"])
+        .values(confirmed=True)
+    )
     await database.execute(query)
     return registered_user
+
 
 @pytest.fixture()
 async def logged_in_token(async_client: AsyncClient, confirmed_user: dict) -> str:
     response = await async_client.post("/token", json=confirmed_user)
     return response.json()["access_token"]
+
 
 @pytest.fixture(autouse=True)
 def mock_httpx_client(mocker):
@@ -74,26 +81,27 @@ def mock_httpx_client(mocker):
 
     return mocked_async_client
 
+
 @pytest.fixture()
 async def created_post(async_client: AsyncClient, logged_in_token: str):
     return await create_post("test", async_client, logged_in_token)
 
 
-#@pytest.fixture(autouse=True)
-#def mock_email_service(mocker):
-    #mock_service = mocker.patch("src.services.email_service.send_email")
-    #mock_service.return_value = {
-        #'MessageId': '0100019133ced5dd-39cb4472-3493-4e27-8fb8-55dce45f7310-000000',   
-        #'ResponseMetadata': {
-            #'RequestId': 'a5c91545-312f-4f4c-a0f7-e6cca433c2f1', 
-            #'HTTPStatusCode': 200, 
-            #'HTTPHeaders': {
-                #'date': 'Thu, 08 Aug 2024 21:04:38 GMT', 
-                #'content-type': 'text/xml', 
-                #'content-length': '326', 
-                #'connection': 'keep-alive', 
-                #'x-amzn-requestid': 'a5c91545-312f-4f4c-a0f7-e6cca433c2f1'
-            #}, 
-            #'RetryAttempts': 0
-        #}
-    #}
+# @pytest.fixture(autouse=True)
+# def mock_email_service(mocker):
+# mock_service = mocker.patch("src.services.email_service.send_email")
+# mock_service.return_value = {
+#'MessageId': '0100019133ced5dd-39cb4472-3493-4e27-8fb8-55dce45f7310-000000',
+#'ResponseMetadata': {
+#'RequestId': 'a5c91545-312f-4f4c-a0f7-e6cca433c2f1',
+#'HTTPStatusCode': 200,
+#'HTTPHeaders': {
+#'date': 'Thu, 08 Aug 2024 21:04:38 GMT',
+#'content-type': 'text/xml',
+#'content-length': '326',
+#'connection': 'keep-alive',
+#'x-amzn-requestid': 'a5c91545-312f-4f4c-a0f7-e6cca433c2f1'
+# },
+#'RetryAttempts': 0
+# }
+# }

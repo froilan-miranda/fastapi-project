@@ -19,12 +19,14 @@ async def upload_file(file: UploadFile):
             filename = temp_file.name
             logger.info(f"Saving uploaded file temporarily to {filename}")
             async with aiofiles.open(filename, "wb") as f:
-                while chunk:= await file.read(CHUNK_SIZE):
+                while chunk := await file.read(CHUNK_SIZE):
                     await f.write(chunk)
 
             file_url = b2_upload_file(local_file=filename, file_name=file.filename)
     except Exception:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to upload file")
-    
-    return {"detail": f"Successfully upload {file.filename}", "file_url": file_url}
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to upload file",
+        )
 
+    return {"detail": f"Successfully upload {file.filename}", "file_url": file_url}

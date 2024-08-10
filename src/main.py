@@ -11,6 +11,7 @@ from src.routers.upload import router as upload_router
 
 logger = logging.getLogger(__name__)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     configure_logging()
