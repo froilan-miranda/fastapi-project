@@ -17,3 +17,4 @@ boto3[crt]
 aiofiles
 b2sdk
 httpx
+sentry-sdk[fastapi]
