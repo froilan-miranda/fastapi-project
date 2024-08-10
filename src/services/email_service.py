@@ -1,6 +1,6 @@
 import logging
 import boto3
-from botocore.exceptions import ClientError
+#from botocore.exceptions import ClientError
 from src.config import config
 
 logger = logging.getLogger(__name__)

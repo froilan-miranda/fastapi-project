@@ -1,9 +1,7 @@
 import pytest
-from httpx import AsyncClient
-from src.tasks import send_user_registration_email
 from databases import Database
 from src.database import post_table
-from src.tasks import APIResponseError, send_text_email,  _generate_cute_creature_api, generate_and_add_to_post
+from src.tasks import APIResponseError, _generate_cute_creature_api, generate_and_add_to_post
 import httpx
 
 #@pytest.mark.anyio
