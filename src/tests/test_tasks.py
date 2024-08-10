@@ -4,17 +4,19 @@ from src.database import post_table
 from src.tasks import APIResponseError, _generate_cute_creature_api, generate_and_add_to_post
 import httpx
 
-#@pytest.mark.anyio
-#async def test_send_text_email(mock_email_service):
-    #await send_text_email("test@example.com", "test subject", "test body")
-    #mock_email_service.send_email.assert_called_once()
+# @pytest.mark.anyio
+# async def test_send_text_email(mock_email_service):
+# await send_text_email("test@example.com", "test subject", "test body")
+# mock_email_service.send_email.assert_called_once()
 
 
 @pytest.mark.anyio
 async def test_generate_cute_creature_api_success(mock_httpx_client):
     json_data = {"output_url": "http://example.com/image.jpg"}
 
-    mock_httpx_client.post.return_value = httpx.Response(status_code=200, json=json_data, request=httpx.Request("POST", "//"))
+    mock_httpx_client.post.return_value = httpx.Response(
+        status_code=200, json=json_data, request=httpx.Request("POST", "//")
+    )
 
     result = await _generate_cute_creature_api("a cat")
 

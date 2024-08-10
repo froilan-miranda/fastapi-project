@@ -45,9 +45,15 @@ async def root():
 
 
 @router.post("/post", response_model=UserPost, status_code=201)
-async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(get_current_user)], background_tasks: BackgroundTasks, request: Request, prompt: str = None):
+async def create_post(
+    post: UserPostIn,
+    current_user: Annotated[User, Depends(get_current_user)],
+    background_tasks: BackgroundTasks,
+    request: Request,
+    prompt: str = None,
+):
     logger.info("Create post")
-    #data = post.model_dump()
+    # data = post.model_dump()
     data = {**post.model_dump(), "user_id": current_user.id}
     query = post_table.insert().values(data)
     logger.debug(query)
@@ -60,14 +66,14 @@ async def create_post(post: UserPostIn, current_user: Annotated[User, Depends(ge
             post_id=last_record_id,
             post_url=request.url_for("get_post_with_comments", post_id=last_record_id),
             database=database,
-            prompt=prompt
+            prompt=prompt,
         )
     return {**data, "id": last_record_id}
 
 
 class PostSorting(str, Enum):
-    new = "new",
-    old = "old",
+    new = ("new",)
+    old = ("old",)
     most_likes = "most_likes"
 
 
@@ -88,13 +94,15 @@ async def get_all_posts(sorting: PostSorting = PostSorting.new):
 
 
 @router.post("/comment", response_model=Comment, status_code=201)
-async def create_comment(comment: CommentIn, current_user: Annotated[User, Depends(get_current_user)]):
+async def create_comment(
+    comment: CommentIn, current_user: Annotated[User, Depends(get_current_user)]
+):
     logger.info("Create comment")
     post = await find_post(comment.post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
 
-    #data = comment.model_dump()
+    # data = comment.model_dump()
     data = {**comment.model_dump(), "user_id": current_user.id}
     query = comment_table.insert().values(data)
     last_record_id = await database.execute(query)
@@ -122,7 +130,9 @@ async def get_post_with_comments(post_id: int):
 
 
 @router.post("/like", response_model=PostLike, status_code=201)
-async def like_post(like: PostLikeIn, current_user: Annotated[User, Depends(get_current_user)]):
+async def like_post(
+    like: PostLikeIn, current_user: Annotated[User, Depends(get_current_user)]
+):
     logger.info("Like post")
     post = await find_post(like.post_id)
     if not post:
@@ -133,4 +143,3 @@ async def like_post(like: PostLikeIn, current_user: Annotated[User, Depends(get_
     logger.debug(query)
     last_record_id = await database.execute(query)
     return {**data, "id": last_record_id}
-
