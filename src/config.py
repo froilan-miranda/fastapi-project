@@ -1,11 +1,14 @@
 from functools import lru_cache
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import pathlib
 
+env_file = f"{pathlib.Path(__file__).resolve().parent.parent}/.env"
+print(env_file)
 
 class BaseConfig(BaseSettings):
     ENV_STATE: Optional[str] = None
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=env_file, extra="ignore")
 
 
 class GlobalConfig(BaseConfig):
@@ -40,6 +43,7 @@ class ProdConfig(GlobalConfig):
 def get_config(env_state: str):
     """Instantiate config based on the environment."""
     configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
+    print(f"env_state: {env_state}")
     return configs[env_state]()
 
 
