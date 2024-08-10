@@ -31,6 +31,11 @@ jobs:
     - name: Lint with ruff
       run: |
         ruff check .
+    - name: 'Create env file'
+      run: |
+        touch .env
+        echo ENV_STATE=test >> .env
+        cat .env
     - name: Test with pytest
       run: |
         pytest
