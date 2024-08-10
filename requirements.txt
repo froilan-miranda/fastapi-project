@@ -14,3 +14,4 @@ passlib[bcrypt]
 boto3[crt]
 aiofiles
 b2sdk
+httpx
